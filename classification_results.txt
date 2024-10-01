@@ -1,0 +1,106 @@
+Configuration:
+IMAGE_SIZE: 224
+BATCH_SIZE: 16
+EPOCHS: 30
+NUM_CLASSES: 3
+
+Starting the COVID-19 X-ray Classification process...
+Loading and preprocessing data...
+Processing COVID images...
+ 48%|████████████████████████▋                          | 1750/3616 [00:03<00:03, 576.48it/s]
+Processing Normal images...
+ 17%|████████▌                                         | 1750/10192 [00:03<00:15, 547.25it/s]
+Processing Viral Pneumonia images...
+100%|███████████████████████████████████████████████████| 1345/1345 [00:02<00:00, 547.75it/s]
+Data loading complete.
+Data shape: (4845, 224, 224, 3), Labels shape: (4845,)
+Encoded labels shape: (4845, 3)
+Train set: (3100, 224, 224, 3), Validation set: (776, 224, 224, 3), Test set: (969, 224, 224, 3)
+Creating a more complex model...
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+Model compiled. Summary:
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ conv2d (Conv2D)                      │ (None, 222, 222, 32)        │             896 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d (MaxPooling2D)         │ (None, 111, 111, 32)        │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_1 (Conv2D)                    │ (None, 109, 109, 64)        │          18,496 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_1 (MaxPooling2D)       │ (None, 54, 54, 64)          │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_2 (Conv2D)                    │ (None, 52, 52, 128)         │          73,856 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_2 (MaxPooling2D)       │ (None, 26, 26, 128)         │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_3 (Conv2D)                    │ (None, 24, 24, 256)         │         295,168 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_3 (MaxPooling2D)       │ (None, 12, 12, 256)         │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ flatten (Flatten)                    │ (None, 36864)               │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense (Dense)                        │ (None, 128)                 │       4,718,720 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout (Dropout)                    │ (None, 128)                 │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 3)                   │             387 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 5,107,523 (19.48 MB)
+ Trainable params: 5,107,523 (19.48 MB)
+ Non-trainable params: 0 (0.00 B)
+Starting model training...
+Epoch 1/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 49s 251ms/step - accuracy: 0.5537 - loss: 0.8931 - val_accuracy: 0.7848 - val_loss: 0.4817 - learning_rate: 0.0010
+Epoch 2/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 50s 258ms/step - accuracy: 0.8174 - loss: 0.4719 - val_accuracy: 0.8853 - val_loss: 0.3070 - learning_rate: 0.0010
+Epoch 3/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 48s 248ms/step - accuracy: 0.8747 - loss: 0.3499 - val_accuracy: 0.8930 - val_loss: 0.2792 - learning_rate: 0.0010
+Epoch 4/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 46s 238ms/step - accuracy: 0.8991 - loss: 0.2697 - val_accuracy: 0.9162 - val_loss: 0.1963 - learning_rate: 0.0010
+Epoch 5/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 46s 237ms/step - accuracy: 0.9136 - loss: 0.2296 - val_accuracy: 0.9201 - val_loss: 0.1956 - learning_rate: 0.0010
+Epoch 6/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 47s 242ms/step - accuracy: 0.9306 - loss: 0.1896 - val_accuracy: 0.9214 - val_loss: 0.1930 - learning_rate: 0.0010
+Epoch 7/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 46s 236ms/step - accuracy: 0.9450 - loss: 0.1632 - val_accuracy: 0.9317 - val_loss: 0.1969 - learning_rate: 0.0010
+Epoch 8/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 45s 230ms/step - accuracy: 0.9449 - loss: 0.1524 - val_accuracy: 0.9214 - val_loss: 0.2087 - learning_rate: 0.0010
+Epoch 9/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 46s 235ms/step - accuracy: 0.9590 - loss: 0.1143 - val_accuracy: 0.9356 - val_loss: 0.1861 - learning_rate: 0.0010
+Epoch 10/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 47s 244ms/step - accuracy: 0.9585 - loss: 0.1141 - val_accuracy: 0.9420 - val_loss: 0.1647 - learning_rate: 0.0010
+Epoch 11/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 45s 230ms/step - accuracy: 0.9679 - loss: 0.0906 - val_accuracy: 0.9317 - val_loss: 0.2029 - learning_rate: 0.0010
+Epoch 12/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 47s 241ms/step - accuracy: 0.9755 - loss: 0.0869 - val_accuracy: 0.9278 - val_loss: 0.2597 - learning_rate: 0.0010
+Epoch 13/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 45s 233ms/step - accuracy: 0.9747 - loss: 0.0640 - val_accuracy: 0.9343 - val_loss: 0.2271 - learning_rate: 0.0010
+Epoch 14/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 47s 245ms/step - accuracy: 0.9727 - loss: 0.0710 - val_accuracy: 0.9356 - val_loss: 0.2435 - learning_rate: 0.0010
+Epoch 15/30
+194/194 ━━━━━━━━━━━━━━━━━━━━ 47s 241ms/step - accuracy: 0.9815 - loss: 0.0481 - val_accuracy: 0.9240 - val_loss: 0.2443 - learning_rate: 0.0010
+Evaluating model on test set...
+31/31 - 5s - 159ms/step - accuracy: 0.9422 - loss: 0.1828
+Test accuracy: 0.9422
+WARNING:absl:You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+Model saved as 'chest_xray_classifier_final.h5'
+Training history plot saved as 'training_history.png'
+31/31 ━━━━━━━━━━━━━━━━━━━━ 5s 175ms/step
+Confusion Matrix:
+[[335  11   4]
+ [ 22 318  10]
+ [  0   9 260]]
+
+Classification Report:
+              precision    recall  f1-score   support
+
+       covid       0.94      0.96      0.95       350
+      normal       0.94      0.91      0.92       350
+   pneumonia       0.95      0.97      0.96       269
+
+    accuracy                           0.94       969
+   macro avg       0.94      0.94      0.94       969
+weighted avg       0.94      0.94      0.94       969

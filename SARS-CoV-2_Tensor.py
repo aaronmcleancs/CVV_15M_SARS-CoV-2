@@ -36,7 +36,7 @@ def unzip_data(zip_path, extract_to):
         zip_ref.extractall(extract_to)
     print("Unzipping complete.")
 
-def load_and_preprocess_data(data_dir):
+def load_and_preprocess_data(data_dir, max_images_per_folder=1950):
     print("Loading and preprocessing data...")
     data = []
     target = []
@@ -46,13 +46,21 @@ def load_and_preprocess_data(data_dir):
         path = os.path.join(data_dir, category, 'images')
         class_num = categories[category]
         print(f"Processing {category} images...")
+
+        # Initialize a counter to track number of images processed per category
+        image_count = 0
+
         for img in tqdm(os.listdir(path)):
+            if image_count >= max_images_per_folder:
+                break  # Stop when the limit is reached
+
             try:
                 img_array = cv2.imread(os.path.join(path, img))
                 img_array = cv2.cvtColor(img_array, cv2.COLOR_BGR2RGB)
                 resized_array = cv2.resize(img_array, (IMAGE_SIZE, IMAGE_SIZE)) / 255.0
                 data.append(resized_array)
                 target.append(class_num)
+                image_count += 1
             except Exception as e:
                 print(f"Error processing image {img}: {e}")
 
@@ -60,16 +68,18 @@ def load_and_preprocess_data(data_dir):
     return np.array(data), np.array(target)
 
 def create_model():
-    print("Creating model...")
+    print("Creating a more complex model...")
     model = keras.Sequential([
-        keras.layers.Conv2D(16, (3, 3), activation='relu', input_shape=(IMAGE_SIZE, IMAGE_SIZE, 3)),
-        keras.layers.MaxPooling2D((2, 2)),
-        keras.layers.Conv2D(32, (3, 3), activation='relu'),
+        keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(IMAGE_SIZE, IMAGE_SIZE, 3)),
         keras.layers.MaxPooling2D((2, 2)),
         keras.layers.Conv2D(64, (3, 3), activation='relu'),
         keras.layers.MaxPooling2D((2, 2)),
+        keras.layers.Conv2D(128, (3, 3), activation='relu'),  # Adding more filters
+        keras.layers.MaxPooling2D((2, 2)),
+        keras.layers.Conv2D(256, (3, 3), activation='relu'),  # Adding another Conv layer
+        keras.layers.MaxPooling2D((2, 2)),
         keras.layers.Flatten(),
-        keras.layers.Dense(64, activation='relu'),
+        keras.layers.Dense(128, activation='relu'),  # Increasing neurons in Dense layer
         keras.layers.Dropout(0.5),
         keras.layers.Dense(NUM_CLASSES, activation='softmax')
     ])
@@ -81,17 +91,24 @@ class DetailedTensorBoard(keras.callbacks.TensorBoard):
 
     def on_epoch_end(self, epoch, logs=None):
         logs = logs or {}
-        logs['learning_rate'] = self.model.optimizer.lr.numpy()
+        # Attempt to get the learning rate from various optimizer structures
+        try:
+            # Handle standard optimizers (e.g., Adam, SGD)
+            if hasattr(self.model.optimizer, 'learning_rate'):
+                logs['learning_rate'] = tf.keras.backend.get_value(self.model.optimizer.learning_rate)
+            # Handle mixed precision or other wrapped optimizers
+            elif hasattr(self.model.optimizer, 'inner_optimizer'):
+                logs['learning_rate'] = tf.keras.backend.get_value(self.model.optimizer.inner_optimizer.learning_rate)
+            else:
+                print("Optimizer type not recognized for learning rate logging.")
+        except Exception as e:
+            print(f"Error retrieving learning rate: {e}")
         super().on_epoch_end(epoch, logs)
 
 def main():
     print("Starting the COVID-19 X-ray Classification process...")
 
-    
-    zip_path = '/usr/colab/COVID-19_Radiography_Dataset.zip'
-    extract_to = '/usr/colab/COVID-19_Radiography_Dataset'
-
-    unzip_data(zip_path, extract_to)
+    extract_to = '/Users/aaronmclean/Desktop/Work/GitHub/SARSCOV19_NN/covid'
 
     X, y = load_and_preprocess_data(extract_to)
     print(f"Data shape: {X.shape}, Labels shape: {y.shape}")
@@ -131,7 +148,7 @@ def main():
     test_loss, test_acc = model.evaluate(X_test, y_test, verbose=2)
     print(f'Test accuracy: {test_acc:.4f}')
 
-    model.save('chest_xray_classifier_final.h5')
+    model.save('chest_xray_classifier_dense.h5')
     print("Model saved as 'chest_xray_classifier_final.h5'")
 
     plt.figure(figsize=(12, 4))
