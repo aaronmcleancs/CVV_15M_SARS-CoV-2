@@ -1,26 +1,15 @@
-Configuration:
 IMAGE_SIZE: 224
 BATCH_SIZE: 16
 EPOCHS: 30
 NUM_CLASSES: 3
 
-Starting the COVID-19 X-ray Classification process...
-Loading and preprocessing data...
 Processing COVID images...
  48%|████████████████████████▋                          | 1750/3616 [00:03<00:03, 576.48it/s]
 Processing Normal images...
  17%|████████▌                                         | 1750/10192 [00:03<00:15, 547.25it/s]
 Processing Viral Pneumonia images...
 100%|███████████████████████████████████████████████████| 1345/1345 [00:02<00:00, 547.75it/s]
-Data loading complete.
-Data shape: (4845, 224, 224, 3), Labels shape: (4845,)
-Encoded labels shape: (4845, 3)
-Train set: (3100, 224, 224, 3), Validation set: (776, 224, 224, 3), Test set: (969, 224, 224, 3)
-Creating a more complex model...
-/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
-  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
-Model compiled. Summary:
-Model: "sequential"
+
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
 ┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
