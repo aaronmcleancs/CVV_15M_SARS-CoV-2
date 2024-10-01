@@ -47,12 +47,11 @@ def load_and_preprocess_data(data_dir, max_images_per_folder=1950):
         class_num = categories[category]
         print(f"Processing {category} images...")
 
-        # Initialize a counter to track number of images processed per category
         image_count = 0
 
         for img in tqdm(os.listdir(path)):
             if image_count >= max_images_per_folder:
-                break  # Stop when the limit is reached
+                break
 
             try:
                 img_array = cv2.imread(os.path.join(path, img))
@@ -74,12 +73,12 @@ def create_model():
         keras.layers.MaxPooling2D((2, 2)),
         keras.layers.Conv2D(64, (3, 3), activation='relu'),
         keras.layers.MaxPooling2D((2, 2)),
-        keras.layers.Conv2D(128, (3, 3), activation='relu'),  # Adding more filters
+        keras.layers.Conv2D(128, (3, 3), activation='relu'),
         keras.layers.MaxPooling2D((2, 2)),
-        keras.layers.Conv2D(256, (3, 3), activation='relu'),  # Adding another Conv layer
+        keras.layers.Conv2D(256, (3, 3), activation='relu'),
         keras.layers.MaxPooling2D((2, 2)),
         keras.layers.Flatten(),
-        keras.layers.Dense(128, activation='relu'),  # Increasing neurons in Dense layer
+        keras.layers.Dense(128, activation='relu'),
         keras.layers.Dropout(0.5),
         keras.layers.Dense(NUM_CLASSES, activation='softmax')
     ])
@@ -91,12 +90,9 @@ class DetailedTensorBoard(keras.callbacks.TensorBoard):
 
     def on_epoch_end(self, epoch, logs=None):
         logs = logs or {}
-        # Attempt to get the learning rate from various optimizer structures
         try:
-            # Handle standard optimizers (e.g., Adam, SGD)
             if hasattr(self.model.optimizer, 'learning_rate'):
                 logs['learning_rate'] = tf.keras.backend.get_value(self.model.optimizer.learning_rate)
-            # Handle mixed precision or other wrapped optimizers
             elif hasattr(self.model.optimizer, 'inner_optimizer'):
                 logs['learning_rate'] = tf.keras.backend.get_value(self.model.optimizer.inner_optimizer.learning_rate)
             else:
