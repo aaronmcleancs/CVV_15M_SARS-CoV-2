@@ -1,6 +1,6 @@
 COVID-19 X-ray Classification
 
-This project implements a Convolutional Neural Network (CNN) for classifying chest X-ray images into three categories: COVID-19, Normal, and Viral Pneumonia. The code utilizes TensorFlow 2.x, Keras, and other libraries for efficient training and evaluation.
+This project implements a Convolutional Neural Network (CNN) for classifying chest X-ray images into three categories: COVID-19, Normal, and Viral Pneumonia. 
 
 Download Dataset: https://www.kaggle.com/datasets/tawsifurrahman/covid19-radiography-database
 

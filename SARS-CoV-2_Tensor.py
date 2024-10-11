@@ -104,7 +104,7 @@ class DetailedTensorBoard(keras.callbacks.TensorBoard):
 def main():
     print("Starting the COVID-19 X-ray Classification process...")
 
-    extract_to = '/Users/aaronmclean/Desktop/Work/GitHub/SARSCOV19_NN/covid'
+    extract_to = '/SARSCOV19_NN/covid'
 
     X, y = load_and_preprocess_data(extract_to)
     print(f"Data shape: {X.shape}, Labels shape: {y.shape}")

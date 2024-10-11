@@ -44,7 +44,7 @@ def generate_output_image(image_path, original_image, predicted_label, confidenc
 
     print(f"Generated output image saved at: {output_image_path}")
 
-unlabeled_images_dir = '/Users/aaronmclean/Desktop/Work/GitHub/SARSCOV19_NN/model_test'
+unlabeled_images_dir = '/SARSCOV19_NN/model_test'
 
 for img_file in os.listdir(unlabeled_images_dir):
     if img_file.endswith('.jpg') or img_file.endswith('.png'):
