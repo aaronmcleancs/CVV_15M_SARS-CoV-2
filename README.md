@@ -4,15 +4,15 @@ COVID-19 X-ray Classification
   <tr>
     <td align="center">
       <strong>COVID-19</strong><br>
-      <img src="https://github.com/user-attachments/assets/a954b5d5-bd59-4add-95e5-00d88c1f753e" alt="COVID-19 Prediction" width="300"/>
+      <img src="https://github.com/user-attachments/assets/a954b5d5-bd59-4add-95e5-00d88c1f753e" alt="COVID-19 Prediction" width="300" height="300"/>
     </td>
     <td align="center">
       <strong>Normal</strong><br>
-      <img src="https://github.com/user-attachments/assets/c5e0d25f-aa2b-4796-98ef-c7748c1c2bf5" alt="Control" width="300"/>
+      <img src="https://github.com/user-attachments/assets/c5e0d25f-aa2b-4796-98ef-c7748c1c2bf5" alt="Control" width="300" height="300"/>
     </td>
     <td align="center">
       <strong>Viral Pneumonia</strong><br>
-      <img src="https://github.com/user-attachments/assets/677cbb73-330c-41d9-8444-6e6f65fdf160" alt="Viral Pneumonia Prediction" width="300"/>
+      <img src="https://github.com/user-attachments/assets/677cbb73-330c-41d9-8444-6e6f65fdf160" alt="Viral Pneumonia Prediction" width="300" height="300"/>
     </td>
   </tr>
 </table>
