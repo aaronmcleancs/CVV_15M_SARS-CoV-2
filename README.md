@@ -17,7 +17,7 @@ COVID-19 X-ray Classification
   </tr>
 </table>
 
-![Training History CVV](https://github.com/user-attachments/assets/592afbd7-3a29-4c3c-bb47-b4811fe076e3)
+![training_history](https://github.com/user-attachments/assets/2dca8db6-960b-4c41-a1ac-67424b609970)
 
 
 Implementation of a Convolutional Neural Network (CNN) for classifying chest X-ray images into three categories: COVID-19, Normal, and Viral Pneumonia using TensorFlow, AWS, and Keras for training and evaluation on apple M-series CPUs
