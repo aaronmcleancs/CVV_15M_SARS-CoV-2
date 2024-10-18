@@ -36,7 +36,7 @@ def unzip_data(zip_path, extract_to):
         zip_ref.extractall(extract_to)
     print("Unzipping complete.")
 
-def load_and_preprocess_data(data_dir, max_images_per_folder=1950):
+def load_and_preprocess_data(data_dir):
     print("Loading and preprocessing data...")
     data = []
     target = []
@@ -47,19 +47,13 @@ def load_and_preprocess_data(data_dir, max_images_per_folder=1950):
         class_num = categories[category]
         print(f"Processing {category} images...")
 
-        image_count = 0
-
         for img in tqdm(os.listdir(path)):
-            if image_count >= max_images_per_folder:
-                break
-
             try:
                 img_array = cv2.imread(os.path.join(path, img))
                 img_array = cv2.cvtColor(img_array, cv2.COLOR_BGR2RGB)
                 resized_array = cv2.resize(img_array, (IMAGE_SIZE, IMAGE_SIZE)) / 255.0
                 data.append(resized_array)
                 target.append(class_num)
-                image_count += 1
             except Exception as e:
                 print(f"Error processing image {img}: {e}")
 
@@ -67,18 +61,20 @@ def load_and_preprocess_data(data_dir, max_images_per_folder=1950):
     return np.array(data), np.array(target)
 
 def create_model():
-    print("Creating a more complex model...")
+    print("Creating a more complex model with approximately 15 million parameters...")
     model = keras.Sequential([
-        keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(IMAGE_SIZE, IMAGE_SIZE, 3)),
-        keras.layers.MaxPooling2D((2, 2)),
-        keras.layers.Conv2D(64, (3, 3), activation='relu'),
+        keras.layers.Conv2D(64, (3, 3), activation='relu', input_shape=(IMAGE_SIZE, IMAGE_SIZE, 3)),
         keras.layers.MaxPooling2D((2, 2)),
         keras.layers.Conv2D(128, (3, 3), activation='relu'),
         keras.layers.MaxPooling2D((2, 2)),
         keras.layers.Conv2D(256, (3, 3), activation='relu'),
         keras.layers.MaxPooling2D((2, 2)),
+        keras.layers.Conv2D(512, (3, 3), activation='relu'),
+        keras.layers.MaxPooling2D((2, 2)),
         keras.layers.Flatten(),
-        keras.layers.Dense(128, activation='relu'),
+        keras.layers.Dense(1024, activation='relu'),
+        keras.layers.Dropout(0.5),
+        keras.layers.Dense(1024, activation='relu'),
         keras.layers.Dropout(0.5),
         keras.layers.Dense(NUM_CLASSES, activation='softmax')
     ])
@@ -104,7 +100,7 @@ class DetailedTensorBoard(keras.callbacks.TensorBoard):
 def main():
     print("Starting the COVID-19 X-ray Classification process...")
 
-    extract_to = '/SARSCOV19_NN/covid'
+    extract_to = '/Users/aaronmclean/Desktop/Work/GitHub/SARSCOV19_NN/covid'
 
     X, y = load_and_preprocess_data(extract_to)
     print(f"Data shape: {X.shape}, Labels shape: {y.shape}")
@@ -128,7 +124,6 @@ def main():
     model.summary()
 
     tensorboard_callback = DetailedTensorBoard(log_dir="./logs")
-    early_stopping = keras.callbacks.EarlyStopping(patience=5, restore_best_weights=True)
 
     print("Starting model training...")
     history = model.fit(
@@ -136,7 +131,7 @@ def main():
         epochs=EPOCHS,
         batch_size=BATCH_SIZE,
         validation_data=(X_val, y_val),
-        callbacks=[tensorboard_callback, early_stopping],
+        callbacks=[tensorboard_callback],
         verbose=1
     )
 

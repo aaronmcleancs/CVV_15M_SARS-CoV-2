@@ -10,7 +10,7 @@ NUM_CLASSES = 3
 
 class_labels = ['COVID', 'Normal', 'Viral Pneumonia']
 
-model = keras.models.load_model('chest_xray_classifier_final.h5')
+model = keras.models.load_model('chest_xray_classifier_78M.h5')
 
 model.compile(optimizer=keras.optimizers.Adam(), loss='categorical_crossentropy', metrics=['accuracy'])
 
