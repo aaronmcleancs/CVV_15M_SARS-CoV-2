@@ -61,7 +61,7 @@ def load_and_preprocess_data(data_dir):
     return np.array(data), np.array(target)
 
 def create_model():
-    print("Creating a more complex model with approximately 15 million parameters...")
+    print("cookin up model")
     model = keras.Sequential([
         keras.layers.Conv2D(64, (3, 3), activation='relu', input_shape=(IMAGE_SIZE, IMAGE_SIZE, 3)),
         keras.layers.MaxPooling2D((2, 2)),
@@ -135,7 +135,7 @@ def main():
         verbose=1
     )
 
-    print("Evaluating model on test set...")
+    print("running eval...")
     test_loss, test_acc = model.evaluate(X_test, y_test, verbose=2)
     print(f'Test accuracy: {test_acc:.4f}')
 
